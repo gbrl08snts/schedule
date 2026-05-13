@@ -18,8 +18,49 @@ extern int MAX_TIME;
 
 struct proc * scheduler(struct proc * current)
 {
-    struct proc * selected; 
+    struct proc * selected;
 
-    return NULL;
+    if (current != NULL)
+    {
+        switch (current->state)
+        {
+            case READY:
+                enqueue(ready, current);
+                break;
+
+            case BLOCKED:
+                enqueue(blocked, current);
+                break;
+
+            case FINISHED:
+                enqueue(finished, current);
+                break;
+
+            default:
+                printf("@@ ERRO no estado de saída do processo %d\n", current->pid);
+        }
+    }
+
+    if (isempty(ready))
+        return NULL;
+
+    // Pega o primeiro processo da fila.
+    struct proc * longest = ready->head;
+    struct proc * aux = longest->next;
+
+    // Procura o processo com maior remaining_time.
+    while (aux != NULL)
+    {
+        if (aux->remaining_time > longest->remaining_time)
+            longest = aux;
+
+        aux = aux->next;
+    }
+
+    // Remove da fila o processo escolhido.
+    selected = dequeue_bypid(ready, longest->pid);
+
+    selected->state = RUNNING;
+
+    return selected;
 }
-
