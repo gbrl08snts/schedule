@@ -57,7 +57,17 @@ struct proc * scheduler(struct proc * current)
         aux = aux->next;
     }
 
+    // Imprime todos os processos na fila antes de escolher
+    printf("Fila ready: ");
+    struct proc * tmp = ready->head;
+    while (tmp != NULL) {
+        printf("[pid=%d rt=%d] ", tmp->pid, tmp->remaining_time);
+        tmp = tmp->next;
+    }
+    printf("\n");
+
     // Remove da fila o processo escolhido.
+    printf("LJF selecionou pid=%d remaining_time=%d\n\n", longest->pid, longest->remaining_time);
     selected = dequeue_bypid(ready, longest->pid);
 
     selected->state = RUNNING;
