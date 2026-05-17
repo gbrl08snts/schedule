@@ -25,14 +25,14 @@ struct proc * scheduler(struct proc * current)
     {
         switch (current->state)
         {
-            // Saiu por preempção → volta para fila 1
+            // Saiu por preempção
             case READY:
                 current->queue = 0;
                 enqueue(ready, current);
                 printf("PRIO_DYNAMIC: pid=%d saiu por PREEMPCAO -> fila 1\n", current->pid);
                 break;
 
-            // Saiu por E/S → vai para blocked, marcado para fila 2 ao voltar
+            // Saiu por E/S 
             case BLOCKED:
                 current->queue = 1;
                 enqueue(blocked, current);
@@ -49,7 +49,7 @@ struct proc * scheduler(struct proc * current)
         }
     }
 
-    // Move processos desbloqueados que voltaram para ready mas pertencem à fila 2
+    // Move processos desbloqueados 
     struct proc * p = ready->head;
     while (p != NULL)
     {
