@@ -29,19 +29,19 @@ struct proc * scheduler(struct proc * current)
             case READY:
                 current->queue = 0;
                 enqueue(ready, current);
-                printf("PRIO_DYNAMIC: pid=%d saiu por PREEMPCAO -> fila 1\n", current->pid);
+              //  printf("PRIO_DYNAMIC: pid=%d saiu por PREEMPCAO -> fila 1\n", current->pid);
                 break;
 
             // Saiu por E/S 
             case BLOCKED:
                 current->queue = 1;
                 enqueue(blocked, current);
-                printf("PRIO_DYNAMIC: pid=%d saiu por E/S -> blocked (voltara para fila 2)\n", current->pid);
+            //    printf("PRIO_DYNAMIC: pid=%d saiu por E/S -> blocked (voltara para fila 2)\n", current->pid);
                 break;
 
             case FINISHED:
                 enqueue(finished, current);
-                printf("PRIO_DYNAMIC: pid=%d FINALIZOU\n", current->pid);
+             //   printf("PRIO_DYNAMIC: pid=%d FINALIZOU\n", current->pid);
                 break;
 
             default:
@@ -58,7 +58,7 @@ struct proc * scheduler(struct proc * current)
         {
             struct proc * tmp = dequeue_bypid(ready, p->pid);
             enqueue(ready2, tmp);
-            printf("PRIO_DYNAMIC: pid=%d voltou de blocked -> movido para fila 2\n", tmp->pid);
+        //    printf("PRIO_DYNAMIC: pid=%d voltou de blocked -> movido para fila 2\n", tmp->pid);
         }
         p = next;
     }
@@ -66,7 +66,7 @@ struct proc * scheduler(struct proc * current)
     if (isempty(ready) && isempty(ready2))
         return NULL;
 
-    // Imprime o estado das duas filas antes de escolher
+    /*/ Imprime o estado das duas filas antes de escolher
     printf("Fila ready1: ");
     struct proc * tmp = ready->head;
     while (tmp != NULL) {
@@ -81,7 +81,7 @@ struct proc * scheduler(struct proc * current)
         printf("[pid=%d] ", tmp->pid);
         tmp = tmp->next;
     }
-    printf("\n");
+    printf("\n"); */
 
     int chance = rand() % 100;
     selected = NULL;
@@ -90,20 +90,20 @@ struct proc * scheduler(struct proc * current)
     {
         if (!isempty(ready)) {
             selected = dequeue(ready);
-            printf("PRIO_DYNAMIC: chance=%d -> selecionou da fila 1: pid=%d\n\n", chance, selected->pid);
+        //    printf("PRIO_DYNAMIC: chance=%d -> selecionou da fila 1: pid=%d\n\n", chance, selected->pid);
         } else {
             selected = dequeue(ready2);
-            printf("PRIO_DYNAMIC: chance=%d -> fila 1 vazia, fallback fila 2: pid=%d\n\n", chance, selected->pid);
+       //     printf("PRIO_DYNAMIC: chance=%d -> fila 1 vazia, fallback fila 2: pid=%d\n\n", chance, selected->pid);
         }
     }
     else
     {
         if (!isempty(ready2)) {
             selected = dequeue(ready2);
-            printf("PRIO_DYNAMIC: chance=%d -> selecionou da fila 2: pid=%d\n\n", chance, selected->pid);
+        //    printf("PRIO_DYNAMIC: chance=%d -> selecionou da fila 2: pid=%d\n\n", chance, selected->pid);
         } else {
             selected = dequeue(ready);
-            printf("PRIO_DYNAMIC: chance=%d -> fila 2 vazia, fallback fila 1: pid=%d\n\n", chance, selected->pid);
+        //    printf("PRIO_DYNAMIC: chance=%d -> fila 2 vazia, fallback fila 1: pid=%d\n\n", chance, selected->pid);
         }
     }
 

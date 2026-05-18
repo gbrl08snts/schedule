@@ -56,7 +56,7 @@ struct proc * scheduler(struct proc * current)
         return NULL;
 
     // Imprime o estado das duas filas antes de escolher
-    printf("Fila ready1: ");
+   /* printf("Fila ready1: ");
     struct proc * tmp = ready->head;
     while (tmp != NULL) {
         printf("[pid=%d ptt=%d] ", tmp->pid, tmp->process_time_total);
@@ -70,7 +70,7 @@ struct proc * scheduler(struct proc * current)
         printf("[pid=%d ptt=%d] ", tmp->pid, tmp->process_time_total);
         tmp = tmp->next;
     }
-    printf("\n");
+    printf("\n"); */
 
     struct proc * selected = NULL;
 
